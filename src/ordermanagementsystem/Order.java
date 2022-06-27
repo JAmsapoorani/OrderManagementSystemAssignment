@@ -9,20 +9,30 @@ public class Order implements Comparable<Order> {
     private LocalDateTime OrderDate;
     private Double Amount;
     private LocalDateTime DeliveryDatetime;
+    private String DeliveryStatus;
+
+    public String getDeliveryStatus() {
+        return DeliveryStatus;
+    }
+
+    public void setDeliveryStatus(String deliveryStatus) {
+        DeliveryStatus = deliveryStatus;
+    }
 
     @Override
     public String toString() {
         return Orderid + " " + OrderDescription + " " + DeliveryAddress + " "+ OrderDate + " "+Amount +
-                " " + DeliveryDatetime ;
+                " " + DeliveryDatetime +" "+DeliveryStatus;
     }
 
-    public Order(String orderid, String orderDescription, String deliveryAddress, LocalDateTime orderDate, Double amount,LocalDateTime deliveryDatetime) {
+    public Order(String orderid, String orderDescription, String deliveryAddress, LocalDateTime orderDate, Double amount, LocalDateTime deliveryDatetime, String deliveryStatus) {
         Orderid = orderid;
         OrderDescription = orderDescription;
         DeliveryAddress = deliveryAddress;
         OrderDate = orderDate;
         Amount = amount;
-        DeliveryDatetime=deliveryDatetime;
+        DeliveryDatetime = deliveryDatetime;
+        DeliveryStatus = deliveryStatus;
     }
 
     public String getOrderid() {

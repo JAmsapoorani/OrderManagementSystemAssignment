@@ -1,20 +1,21 @@
 package ordermanagementsystem;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static java.lang.System.exit;
 
-public class OrderManagementSystem implements OrderManagement  {
-   ArrayList<Order> al=new ArrayList<>();
+public class OrderManagementSystem implements OrderManagement,Runnable  {
+    ArrayList<Order> al=new ArrayList<>();
+    ArrayList<Order> t=new ArrayList<>();
+    public void writeOperation(Order order)  {
+        al.add(order);
+    }
     Scanner sc = new Scanner(System.in);
     File file=new File("C:\\Users\\Amsapoorani\\IdeaProjects\\OrderManagementSystemAssignment\\src\\ordermanagementsystem\\OrderManagement.txt");
-    String str=" ";
- public void writeOperation(Order order)  {
-    al.add(order);
- }
-    public void addOrder() throws IOException {
+    public void addOrder(ArrayList<Order> al) throws IOException {
     BufferedWriter writer=new BufferedWriter(new FileWriter(file));
         int size=al.size();
         for(int i=0;i<size;i++)
@@ -23,31 +24,25 @@ public class OrderManagementSystem implements OrderManagement  {
         }
     writer.close();
     }
-    public Boolean viewOrderList(ArrayList t)
+    public void viewOrderList()
     {
-       if(t.isEmpty())
-       {
-           return false;
-       }
-       else {
            System.out.println("-----------------------------------------------------------------------------------------------------------------");
            System.out.println("\tOrder Id" + "\t|\t" +
                    "Order Desc" + "\t|\t" +
                    "Delivery Address" + "\t|\t" +
                    "Order Date" + "\t|\t" +
                    "Amount" + "\t|\t" +
-                   "Delivery Datetime" + "\t|\t");
+                   "Delivery Datetime" + "\t|\t"+
+                   "Delivery status"+"\t|\t");
            System.out.println("-----------------------------------------------------------------------------------------------------------------");
-       }
-       return true;
     }
-    public void viewOrderList() {
+    public void viewOrderList(ArrayList<Order> al) {
         Iterator<Order> itr=al.iterator();
         while (itr.hasNext())
         {
             Order o=(Order)itr.next();
             System.out.println("\t "+o.getOrderid()+"\t\t|\t"+o.getOrderDescription()+"\t \t|\t"+o.getDeliveryAddress()+"\t|\t"
-                    +o.getOrderDate()+"\t|\t"+o.getAmount()+"\t|\t"+o.getDeliveryDatetime()+"\t|\t");
+                    +o.getOrderDate()+"\t|\t"+o.getAmount()+"\t|\t"+o.getDeliveryDatetime()+"\t|\t"+o.getDeliveryStatus()+"\t|\t" );
         }
     }
     public String viewByOrderId() {
@@ -55,10 +50,7 @@ public class OrderManagementSystem implements OrderManagement  {
         String str=sc.next();
         return str;
     }
-
-
-
-    public Boolean viewByOrderId(ArrayList t,String id)
+    public Boolean viewByOrderId(ArrayList<Order> t,String id)
     {
         System.out.println(id);
         int count=0;
@@ -75,6 +67,7 @@ public class OrderManagementSystem implements OrderManagement  {
                 System.out.println("Order Date:"+o.getOrderDate());
                 System.out.println("Amount:"+o.getAmount());
                 System.out.println("Delivery Datetime:"+o.getDeliveryDatetime());
+                System.out.println("Delivery Status:"+o.getDeliveryStatus());
             }
             else
             {
@@ -87,177 +80,176 @@ public class OrderManagementSystem implements OrderManagement  {
         return false;
     }
     @Override
-    public Boolean sortOrder() {
-         int i=0;
-         Boolean flag=true;
-         while (flag)
-         {
-             System.out.println("******** Choose Sort Order Property*********");
-             System.out.println("1.\tOrderId\n" +
-                     "2.\tOrder Desc\n" +
-                     "3.\tDeliveryAddress\n" +
-                     "4.\tOrder Date\n" +
-                     "5.\tAmount\n" +
-                     "6.\tDelivery Datetime\n" +
-                     "7.\tExit\n");
-             System.out.println("enter your choice:");
-             i = sc.nextInt();
-             switch (i) {
-                 case 1:
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     System.out.println("\tOrder Id" + "\t|\t" +
-                             "Order Desc" + "\t|\t" +
-                             "Delivery Address" + "\t|\t" +
-                             "Order Date" + "\t|\t" +
-                             "Amount" + "\t|\t" +
-                             "Delivery Datetime" + "\t|\t");
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     Collections.sort(al, new Comparator<Order>() {
-                         @Override
-                         public int compare(Order o1, Order o2) {
-                             return o1.getOrderid().compareTo(o2.getOrderid());
-                         }
-                     });
-                     Iterator iterator = al.iterator();
-                     while (iterator.hasNext()) {
-                         Order o = (Order) iterator.next();
-                         System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
-                                 + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t");
-                     }
-                     System.out.println("Successfully Sorted by Orderid");
-                     break;
-                 case 2:
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     System.out.println("\tOrder Id" + "\t|\t" +
-                             "Order Desc" + "\t|\t" +
-                             "Delivery Address" + "\t|\t" +
-                             "Order Date" + "\t|\t" +
-                             "Amount" + "\t|\t" +
-                             "Delivery Datetime" + "\t|\t");
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     Collections.sort(al, new Comparator<Order>() {
-                         @Override
-                         public int compare(Order o1, Order o2) {
-                             return o1.getOrderDescription().compareTo(o2.getOrderDescription());
-                         }
-                     });
-                     Iterator iterator1 = al.iterator();
-                     while (iterator1.hasNext()) {
-                         Order o = (Order) iterator1.next();
-                         System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
-                                 + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t");
-                     }
-                     System.out.println("Successfully Sorted by Order description");
-                     break;
-                 case 3:
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     System.out.println("\tOrder Id" + "\t|\t" +
-                             "Order Desc" + "\t|\t" +
-                             "Delivery Address" + "\t|\t" +
-                             "Order Date" + "\t|\t" +
-                             "Amount" + "\t|\t" +
-                             "Delivery Datetime" + "\t|\t");
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     Collections.sort(al, new Comparator<Order>() {
-                         @Override
-                         public int compare(Order o1, Order o2) {
-                             return o1.getDeliveryAddress().compareTo(o2.getDeliveryAddress());
-                         }
-                     });
-                     Iterator iterator3 = al.iterator();
-                     while (iterator3.hasNext()) {
-                         Order o = (Order) iterator3.next();
-                         System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
-                                 + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t");
-                     }
-                     System.out.println("Successfully Sorted by Delivery Address");
-                     break;
-                 case 4:
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     System.out.println("\tOrder Id" + "\t|\t" +
-                             "Order Desc" + "\t|\t" +
-                             "Delivery Address" + "\t|\t" +
-                             "Order Date" + "\t|\t" +
-                             "Amount" + "\t|\t" +
-                             "Delivery Datetime" + "\t|\t");
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     Collections.sort(al, new Comparator<Order>() {
-                         @Override
-                         public int compare(Order o1, Order o2) {
-                             return o1.getOrderDate().compareTo(o2.getOrderDate());
-                         }
-                     });
-                     Iterator iterator4 = al.iterator();
-                     while (iterator4.hasNext()) {
-                         Order o = (Order) iterator4.next();
-                         System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
-                                 + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t");
-                     }
-                     System.out.println("Successfully Sorted by Order Date");
-                     break;
-                 case 5:
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     System.out.println("\tOrder Id" + "\t|\t" +
-                             "Order Desc" + "\t|\t" +
-                             "Delivery Address" + "\t|\t" +
-                             "Order Date" + "\t|\t" +
-                             "Amount" + "\t|\t" +
-                             "Delivery Datetime" + "\t|\t");
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     Collections.sort(al, new Comparator<Order>() {
-                         @Override
-                         public int compare(Order o1, Order o2) {
-                             return o1.getAmount().compareTo(o2.getAmount());
-                         }
-                     });
-                     Iterator iterator5 = al.iterator();
-                     while (iterator5.hasNext()) {
-                         Order o = (Order) iterator5.next();
-                         System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
-                                 + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t");
-                     }
-                     System.out.println("Successfully Sorted by Amount");
-                     break;
-                 case 6:
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     System.out.println("\tOrder Id" + "\t|\t" +
-                             "Order Desc" + "\t|\t" +
-                             "Delivery Address" + "\t|\t" +
-                             "Order Date" + "\t|\t" +
-                             "Amount" + "\t|\t" +
-                             "Delivery Datetime" + "\t|\t");
-                     System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                     Collections.sort(al, new Comparator<Order>() {
-                         @Override
-                         public int compare(Order o1, Order o2) {
-                             return o1.getDeliveryDatetime().compareTo(o2.getDeliveryDatetime());
-                         }
-                     });
-                     Iterator iterator6= al.iterator();
-                     while (iterator6.hasNext()) {
-                         Order o = (Order) iterator6.next();
-                         System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
-                                 + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t");
-                     }
-                     System.out.println("Successfully Sorted by Delivery Date time");
-                     break;
-                 case 7:
-                     i++;
-                     flag=false;
-                      break;
-                 default:
-                     System.out.println("Wrong  choice!!!!");
-             }
-         }
-     if(i==0)
-     {
-         return false;
-     }
-     return true;
+    public void sortOrder(ArrayList<Order> al) {
+        int i = 0;
+        Boolean flag = true;
+        while (flag) {
+            System.out.println("******** Choose Sort Order Property*********");
+            System.out.println("1.\tOrderId\n" +
+                    "2.\tOrder Desc\n" +
+                    "3.\tDeliveryAddress\n" +
+                    "4.\tOrder Date\n" +
+                    "5.\tAmount\n" +
+                    "6.\tDelivery Datetime\n" +
+                    "7.\tExit\n");
+            System.out.println("enter your choice:");
+            i = sc.nextInt();
+            switch (i) {
+                case 1:
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\tOrder Id" + "\t|\t" +
+                            "Order Desc" + "\t|\t" +
+                            "Delivery Address" + "\t|\t" +
+                            "Order Date" + "\t|\t" +
+                            "Amount" + "\t|\t" +
+                            "Delivery Datetime" + "\t|\t" +
+                            "Delivery status" + "\t|\t");
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    Collections.sort(al, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order o1, Order o2) {
+                            return o1.getOrderid().compareTo(o2.getOrderid());
+                        }
+                    });
+                    Iterator iterator = al.iterator();
+                    while (iterator.hasNext()) {
+                        Order o = (Order) iterator.next();
+                        System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
+                                + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t" + o.getDeliveryStatus() + "\t|\t");
+                    }
+                    System.out.println("Successfully Sorted by Orderid");
+                    break;
+                case 2:
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\tOrder Id" + "\t|\t" +
+                            "Order Desc" + "\t|\t" +
+                            "Delivery Address" + "\t|\t" +
+                            "Order Date" + "\t|\t" +
+                            "Amount" + "\t|\t" +
+                            "Delivery Datetime" + "\t|\t" +
+                            "Delivery status" + "\t|\t");
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    Collections.sort(al, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order o1, Order o2) {
+                            return o1.getOrderDescription().compareTo(o2.getOrderDescription());
+                        }
+                    });
+                    Iterator iterator1 = al.iterator();
+                    while (iterator1.hasNext()) {
+                        Order o = (Order) iterator1.next();
+                        System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
+                                + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t" + o.getDeliveryStatus() + "\t|\t");
+                    }
+                    System.out.println("Successfully Sorted by Order description");
+                    break;
+                case 3:
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\tOrder Id" + "\t|\t" +
+                            "Order Desc" + "\t|\t" +
+                            "Delivery Address" + "\t|\t" +
+                            "Order Date" + "\t|\t" +
+                            "Amount" + "\t|\t" +
+                            "Delivery Datetime" + "\t|\t" +
+                            "Delivery status" + "\t|\t");
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    Collections.sort(al, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order o1, Order o2) {
+                            return o1.getDeliveryAddress().compareTo(o2.getDeliveryAddress());
+                        }
+                    });
+                    Iterator iterator3 = al.iterator();
+                    while (iterator3.hasNext()) {
+                        Order o = (Order) iterator3.next();
+                        System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
+                                + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t" + o.getDeliveryStatus() + "\t|\t");
+                    }
+                    System.out.println("Successfully Sorted by Delivery Address");
+                    break;
+                case 4:
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\tOrder Id" + "\t|\t" +
+                            "Order Desc" + "\t|\t" +
+                            "Delivery Address" + "\t|\t" +
+                            "Order Date" + "\t|\t" +
+                            "Amount" + "\t|\t" +
+                            "Delivery Datetime" + "\t|\t" +
+                            "Delivery status" + "\t|\t");
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    Collections.sort(al, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order o1, Order o2) {
+                            return o1.getOrderDate().compareTo(o2.getOrderDate());
+                        }
+                    });
+                    Iterator iterator4 = al.iterator();
+                    while (iterator4.hasNext()) {
+                        Order o = (Order) iterator4.next();
+                        System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
+                                + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t" + o.getDeliveryStatus() + "\t|\t");
+                    }
+                    System.out.println("Successfully Sorted by Order Date");
+                    break;
+                case 5:
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\tOrder Id" + "\t|\t" +
+                            "Order Desc" + "\t|\t" +
+                            "Delivery Address" + "\t|\t" +
+                            "Order Date" + "\t|\t" +
+                            "Amount" + "\t|\t" +
+                            "Delivery Datetime" + "\t|\t" +
+                            "Delivery status" + "\t|\t");
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    Collections.sort(al, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order o1, Order o2) {
+                            return o1.getAmount().compareTo(o2.getAmount());
+                        }
+                    });
+                    Iterator iterator5 = al.iterator();
+                    while (iterator5.hasNext()) {
+                        Order o = (Order) iterator5.next();
+                        System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
+                                + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t" + o.getDeliveryStatus() + "\t|\t");
+                    }
+                    System.out.println("Successfully Sorted by Amount");
+                    break;
+                case 6:
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    System.out.println("\tOrder Id" + "\t|\t" +
+                            "Order Desc" + "\t|\t" +
+                            "Delivery Address" + "\t|\t" +
+                            "Order Date" + "\t|\t" +
+                            "Amount" + "\t|\t" +
+                            "Delivery Datetime" + "\t|\t+" +
+                            "Delivery status" + "\t|\t");
+                    System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                    Collections.sort(al, new Comparator<Order>() {
+                        @Override
+                        public int compare(Order o1, Order o2) {
+                            return o1.getDeliveryDatetime().compareTo(o2.getDeliveryDatetime());
+                        }
+                    });
+                    Iterator iterator6 = al.iterator();
+                    while (iterator6.hasNext()) {
+                        Order o = (Order) iterator6.next();
+                        System.out.println("\t " + o.getOrderid() + "\t\t|\t" + o.getOrderDescription() + "\t \t|\t" + o.getDeliveryAddress() + "\t|\t"
+                                + o.getOrderDate() + "\t|\t" + o.getAmount() + "\t|\t" + o.getDeliveryDatetime() + "\t|\t" + o.getDeliveryStatus() + "\t|\t");
+                    }
+                    System.out.println("Successfully Sorted by Delivery Date time");
+                    break;
+                case 7:
+                    flag = false;
+                    break;
+                default:
+                    System.out.println("Wrong  choice!!!!");
+            }
+        }
     }
 
     @Override
-    public boolean deleteOrderbyId() throws IOException {
+    public void deleteOrderbyId(ArrayList<Order> al) throws IOException {
      boolean f=true;
      while(f) {
          System.out.println("enter order id:");
@@ -291,37 +283,48 @@ public class OrderManagementSystem implements OrderManagement  {
              f = false;
          }
          }
-
-        return true;
     }
 
     @Override
-    public Boolean markasDelivered() throws IOException {
+    public void markasDelivered(ArrayList<Order> al) throws IOException {
         boolean f=true;
         while(f) {
             System.out.println("enter order id:");
             String id = sc.next();
             ListIterator iterator = al.listIterator();
             int count=0;
-            while (iterator.hasNext()) {
-                Order o = (Order) iterator.next();
-                if (id.equals(o.getOrderid())) {
-                  o.setDeliveryDatetime(LocalDateTime.now());
-                    System.out.println("Order delivered Successfully");
-                    count++;
-                }
 
+            while (iterator.hasNext())
+            {
+                Order o = (Order) iterator.next();
+                    if (id.equals(o.getOrderid())&&o.getDeliveryStatus().equals("Inprogress") )
+                    {
+                        o.setDeliveryDatetime(LocalDateTime.now());
+                        o.setDeliveryStatus("Delivered");
+                        System.out.println("Order delivered Successfully");
+                        count++;
+                    }
+                    else if(id.equals(o.getOrderid())&&o.getDeliveryStatus().equals("Delivered"))
+                   {
+                        System.out.println("Order is already delivered on <" + o.getDeliveryDatetime() + ">");
+                        count++;
+                }
+                    else
+                    {
+                        continue;
+                    }
             }
-            System.out.println(al);
             if(count==0)
             {
                 System.out.println("Order Id is not available");
             }
                 System.out.println("Do you want to update another order(Y/N):");
                 String str = sc.next();
-                if (str.equals("Y")) {
+                if (str.equals("Y"))
+                {
                     continue;
-                } else {
+                } else
+                {
                     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                     int size = al.size();
                     for (int i = 0; i < size; i++) {
@@ -331,11 +334,37 @@ public class OrderManagementSystem implements OrderManagement  {
                     f = false;
                 }
             }
-        return true;
     }
-
+    public static String getFileWithDate(String fileName, String fileSaperator, String dateFormat) {
+        String FileNamePrefix = fileName.substring(0, fileName.lastIndexOf(fileSaperator));
+        String FileNameSuffix = fileName.substring(fileName.lastIndexOf(fileSaperator)+1, fileName.length());
+        String newFileName = new SimpleDateFormat("'"+FileNamePrefix+"_'"+dateFormat+"'"+fileSaperator+FileNameSuffix+"'").format(new Date());
+        return newFileName;
+    }
     @Override
-    public void generateReport() {
+    public void generateReport(ArrayList<Order> al) throws IOException {
+        String fileSaperator = ".", format = "yyyyMMMdd_HHmm";
+        String filename=getFileWithDate("Order_Report_.txt", fileSaperator, format);
+        File file1 = new File("C:\\Users\\Amsapoorani\\IdeaProjects\\OrderManagementSystemAssignment\\src\\ordermanagementsystem\\"+filename);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file1));
+        int size=al.size();
+        for(int i=0;i<size;i++)
+        {
+                writer.write(al.get(i).toString()+"\n");
+        }
+        writer.close();
+        System.out.println("Report Generated Successfully");
+    }
+    @Override
+    public void run() {
+        String fileSaperator = ".", format = "yyyyMMMdd_HHmm";
+        String filename=getFileWithDate("Order_Report_.txt", fileSaperator, format);
+        File file1 = new File("C:\\Users\\Amsapoorani\\IdeaProjects\\OrderManagementSystemAssignment\\src\\ordermanagementsystem\\"+filename);
+        try {
+            file1.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -356,7 +385,7 @@ public class OrderManagementSystem implements OrderManagement  {
                /* for (String i : fields) {
                     System.out.println(i);
                 }*/
-                order = new Order(fields[0], fields[1], fields[2], LocalDateTime.parse(fields[3]), Double.parseDouble(fields[4]), LocalDateTime.parse(fields[5]));
+                order = new Order(fields[0], fields[1], fields[2], LocalDateTime.parse(fields[3]), Double.parseDouble(fields[4]), LocalDateTime.parse(fields[5]),fields[6]);
                 t.add(order);
                 orderManagementSystem.writeOperation(order);
             }
@@ -379,7 +408,6 @@ public class OrderManagementSystem implements OrderManagement  {
             System.out.println("Choose Option:");
             Scanner sc = new Scanner(System.in);
             int ch = sc.nextInt();
-            int count = 0;
             switch (ch) {
                 case 1:
                     do {
@@ -405,10 +433,11 @@ public class OrderManagementSystem implements OrderManagement  {
                                 LocalDateTime OrderDate = LocalDateTime.now();
                                 System.out.print("\n Amount :");
                                 Double Amount = sc.nextDouble();
-                                LocalDateTime Deliverydate = LocalDateTime.now();
-                                order=new Order(Orderid, OrderDescription, DeliveryAddress, OrderDate, Amount, Deliverydate);
+                                LocalDateTime Deliverydate = OrderDate.plusDays(2);
+                                System.out.println("\n Delivery Status");
+                                String Deliverystatus="Inprogress";
+                                order=new Order(Orderid, OrderDescription, DeliveryAddress, OrderDate, Amount, Deliverydate,Deliverystatus);
                                 t.add(order);
-                                orderManagementSystem.writeOperation(order);
                                 System.out.println("Order Added Successfully");
                             }
                         System.out.println("Do you want to enter more order details(Y/N)");
@@ -418,66 +447,61 @@ public class OrderManagementSystem implements OrderManagement  {
                             continue;
 
                         } else if (s.equals("N")) {
-                            orderManagementSystem.addOrder();
-                            count++;
+                            orderManagementSystem.addOrder(t);
                             break;
                         }
                     } while (true);
-                    if (count == 1) {
                         continue;
-                    }
-                    break;
                 case 2:
-
-                  boolean value=orderManagementSystem.viewOrderList(t);
-                   if(value==true) {
-                       orderManagementSystem.viewOrderList();
+                   if(t.isEmpty()) {
+                       continue;
                    }
                    else
                    {
-                       continue;
+                       orderManagementSystem.viewOrderList();
                    }
-                   break;
+                    orderManagementSystem.viewOrderList(t);
+                    continue;
                 case 3:
-                    int count1=0;
+
                  do {
                       String s = orderManagementSystem.viewByOrderId();
                       boolean b = orderManagementSystem.viewByOrderId(t, s);
                       if (b == true) {
-                          count1++;
                          break;
                       } else {
                           continue;
                       }
                   } while(true);
-                 if(count1==1)
-                 {
                      continue;
-                 }
-                    break;
                 case 4:
-                    boolean temp=orderManagementSystem.sortOrder();
-                    if(temp==true)
-                    {
-                        continue;
-                    }
-                    break;
+                   orderManagementSystem.sortOrder(t);
+                    continue;
                 case 5:
-                   boolean d= orderManagementSystem.deleteOrderbyId();
-                   if(d==true)
-                   {
-                       continue;
-                   }
-                   break;
+                   orderManagementSystem.deleteOrderbyId(t);
+                   continue;
                 case 6:
-                    boolean m= orderManagementSystem.markasDelivered();
-                    if(m==true)
-                    {
-                        continue;
-                    }
-                    break;
+                   orderManagementSystem.markasDelivered(t);
+                   continue;
                 case 7:
-                    break;
+                    Iterator it=t.iterator();
+                    ArrayList<Order> al=new ArrayList<>();
+                    while(it.hasNext())
+                    {
+                        Order o=(Order) it.next();
+                        if(o.getDeliveryStatus().equals("Delivered"))
+                        {
+                            al.add(o);
+                        }
+                        if(o.getDeliveryStatus().equals("Inprogress"))
+                        {
+                            continue;
+                        }
+                    }
+                    Thread thread=new Thread(new OrderManagementSystem());
+                    thread.start();
+                    orderManagementSystem.generateReport(al);
+                    continue;
                 case 8:
                     exit(0);
                 default:
@@ -488,4 +512,6 @@ public class OrderManagementSystem implements OrderManagement  {
         }
 
     }
+
+
 }
