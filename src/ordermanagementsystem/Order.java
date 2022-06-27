@@ -2,20 +2,27 @@ package ordermanagementsystem;
 
 import java.time.LocalDateTime;
 
-public class Order {
+public class Order implements Comparable<Order> {
     private String Orderid;
     private String OrderDescription;
     private String DeliveryAddress;
     private LocalDateTime OrderDate;
     private Double Amount;
-    private LocalDateTime LocalDateTime;
+    private LocalDateTime DeliveryDatetime;
 
-    public Order(String orderid, String orderDescription, String deliveryAddress, LocalDateTime orderDate, Double amount) {
+    @Override
+    public String toString() {
+        return Orderid + " " + OrderDescription + " " + DeliveryAddress + " "+ OrderDate + " "+Amount +
+                " " + DeliveryDatetime ;
+    }
+
+    public Order(String orderid, String orderDescription, String deliveryAddress, LocalDateTime orderDate, Double amount,LocalDateTime deliveryDatetime) {
         Orderid = orderid;
         OrderDescription = orderDescription;
         DeliveryAddress = deliveryAddress;
         OrderDate = orderDate;
         Amount = amount;
+        DeliveryDatetime=deliveryDatetime;
     }
 
     public String getOrderid() {
@@ -58,13 +65,16 @@ public class Order {
         Amount = amount;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return LocalDateTime;
+    public LocalDateTime getDeliveryDatetime() {
+        return DeliveryDatetime;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        LocalDateTime = localDateTime;
+    public void setDeliveryDatetime(LocalDateTime deliveryDatetime) {
+        DeliveryDatetime = deliveryDatetime;
     }
 
-
+    @Override
+    public int compareTo(Order o) {
+        return 0;
+    }
 }
