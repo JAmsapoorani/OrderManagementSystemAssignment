@@ -10,6 +10,7 @@ import static java.lang.System.exit;
 public class OrderManagementSystem implements OrderManagement,Runnable  {
     ArrayList<Order> t;
     public OrderManagementSystem(ArrayList<Order> t) {
+
         this.t = t;
     }
     Scanner sc = new Scanner(System.in);
@@ -291,7 +292,6 @@ public class OrderManagementSystem implements OrderManagement,Runnable  {
             String id = sc.next();
             ListIterator iterator = t.listIterator();
             int count=0;
-
             while (iterator.hasNext())
             {
                 Order o = (Order) iterator.next();
@@ -366,7 +366,7 @@ public class OrderManagementSystem implements OrderManagement,Runnable  {
             writer.write(al.get(i).toString()+"\n");
         }
         writer.close();
-        System.out.println("Report Generated Successfully");
+
     }
     @Override
     public void run() {
@@ -381,7 +381,6 @@ public class OrderManagementSystem implements OrderManagement,Runnable  {
         ArrayList<Order> t = new ArrayList<>();
         OrderManagementSystem orderManagementSystem=new OrderManagementSystem(t);
         String line ;
-        HashSet hs=new HashSet(t);
         File file=new File("C:\\Users\\Amsapoorani\\IdeaProjects\\OrderManagementSystemAssignment\\src\\ordermanagementsystem\\OrderManagement.txt");
         FileReader fileReader=new FileReader(file);
         BufferedReader bufferedReader=new BufferedReader(fileReader);
@@ -422,7 +421,7 @@ public class OrderManagementSystem implements OrderManagement,Runnable  {
                                 temp=false;
                             }
                         }
-                        if(temp==false || hs.add(Orderid) == false) {
+                        if(temp==false ) {
                             System.out.println("Duplicate Order Id. Please enter unique order id");
                             continue;
                         }
@@ -485,6 +484,7 @@ public class OrderManagementSystem implements OrderManagement,Runnable  {
                 case 7:
                     Thread thread=new Thread(new OrderManagementSystem(t));
                     thread.start();
+                    System.out.println("Report Generated Successfully");
                     continue;
                 case 8:
                     exit(0);
