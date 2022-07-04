@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public interface OrderManagement {
     public void addOrder() throws IOException;
-    public void viewOrderList(ArrayList<Order> t);
+    public void viewOrderList();
     public Boolean viewByOrderId(String s);
     public void sortOrder();
     public  void deleteOrderbyId() throws IOException;

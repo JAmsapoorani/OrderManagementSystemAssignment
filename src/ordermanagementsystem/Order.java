@@ -2,89 +2,86 @@ package ordermanagementsystem;
 
 import java.time.LocalDateTime;
 
-public class Order implements Comparable<Order> {
-    private String Orderid;
-    private String OrderDescription;
-    private String DeliveryAddress;
-    private LocalDateTime OrderDate;
-    private Double Amount;
-    private LocalDateTime DeliveryDatetime;
-    private String DeliveryStatus;
+public class Order  {
+    private String orderid;
+    private String orderdescription;
+    private String deliveryaddress;
+    private LocalDateTime orderdate;
+    private double amount;
+    private LocalDateTime deliverydatetime;
+    private String deliverystatus;
 
-    public String getDeliveryStatus() {
-        return DeliveryStatus;
+    public String getDeliverystatus() {
+        return deliverystatus;
     }
 
-    public void setDeliveryStatus(String deliveryStatus) {
-        DeliveryStatus = deliveryStatus;
+    public void setDeliverystatus(String deliverystatus) {
+        this.deliverystatus = deliverystatus;
     }
 
     @Override
     public String toString() {
-        return Orderid + " " + OrderDescription + " " + DeliveryAddress + " "+ OrderDate + " "+Amount +
-                " " + DeliveryDatetime +" "+DeliveryStatus;
+        return orderid + "," + orderdescription + "," + deliveryaddress + ","+ orderdate + ","+amount +
+                "," + deliverydatetime +","+ deliverystatus;
     }
 
-    public Order(String orderid, String orderDescription, String deliveryAddress, LocalDateTime orderDate, Double amount, LocalDateTime deliveryDatetime, String deliveryStatus) {
-        Orderid = orderid;
-        OrderDescription = orderDescription;
-        DeliveryAddress = deliveryAddress;
-        OrderDate = orderDate;
-        Amount = amount;
-        DeliveryDatetime = deliveryDatetime;
-        DeliveryStatus = deliveryStatus;
+    public Order(String orderid, String orderdescription, String deliveryaddress, LocalDateTime orderdate, Double amount, LocalDateTime deliverydatetime, String deliverystatus) {
+        this.orderid = orderid;
+        this.orderdescription = orderdescription;
+        this.deliveryaddress = deliveryaddress;
+        this.orderdate = orderdate;
+        this.amount = amount;
+        this.deliverydatetime = deliverydatetime;
+        this.deliverystatus = deliverystatus;
     }
 
     public String getOrderid() {
-        return Orderid;
+        return orderid;
     }
 
     public void setOrderid(String orderid) {
-        Orderid = orderid;
+        this.orderid = orderid;
     }
 
-    public String getOrderDescription() {
-        return OrderDescription;
+    public String getOrderdescription() {
+        return orderdescription;
     }
 
-    public void setOrderDescription(String orderDescription) {
-        OrderDescription = orderDescription;
+    public void setOrderdescription(String orderdescription) {
+        this.orderdescription = orderdescription;
     }
 
-    public String getDeliveryAddress() {
-        return DeliveryAddress;
+    public String getDeliveryaddress() {
+        return deliveryaddress;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
-        DeliveryAddress = deliveryAddress;
+    public void setDeliveryaddress(String deliveryaddress) {
+        this.deliveryaddress = deliveryaddress;
     }
 
-    public LocalDateTime getOrderDate() {
-        return OrderDate;
+    public LocalDateTime getOrderdate() {
+        return orderdate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
-        OrderDate = orderDate;
+    public void setOrderdate(LocalDateTime orderdate) {
+        this.orderdate = orderdate;
     }
 
     public Double getAmount() {
-        return Amount;
+        return amount;
     }
 
     public void setAmount(Double amount) {
-        Amount = amount;
+        this.amount = amount;
     }
 
-    public LocalDateTime getDeliveryDatetime() {
-        return DeliveryDatetime;
+    public LocalDateTime getDeliverydatetime() {
+        return deliverydatetime;
     }
 
-    public void setDeliveryDatetime(LocalDateTime deliveryDatetime) {
-        DeliveryDatetime = deliveryDatetime;
+    public void setDeliverydatetime(LocalDateTime deliverydatetime) {
+        this.deliverydatetime = deliverydatetime;
     }
 
-    @Override
-    public int compareTo(Order o) {
-        return 0;
-    }
+
 }
